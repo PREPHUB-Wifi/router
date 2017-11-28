@@ -4,6 +4,8 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import socketserver
 
+import listener
+
 class S(BaseHTTPRequestHandler):
     def _set_headers(self):
         self.send_response(200)
@@ -14,9 +16,6 @@ class S(BaseHTTPRequestHandler):
         #self._set_headers()
         #self.wfile.write("<html><body><h1>hi!</h1></body></html>")
         print("hi get")
-        content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
-        post_data = self.rfile.read(content_length) # <--- Gets the data itself
-        print(post_data)
 
     def do_HEAD(self):
         #self._set_headers()
@@ -30,10 +29,11 @@ class S(BaseHTTPRequestHandler):
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
         print(post_data)
-        
 
 
-def run(server_class=HTTPServer, handler_class=S, port=8000):
+def run(server_class=HTTPServer, handler_class=S, port=80):
+	#TODO: launch listener in new thread
+	#TODO: handle radio locking
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
     print('Starting httpd...')
