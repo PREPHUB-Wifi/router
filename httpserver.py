@@ -14,6 +14,9 @@ class S(BaseHTTPRequestHandler):
         #self._set_headers()
         #self.wfile.write("<html><body><h1>hi!</h1></body></html>")
         print("hi get")
+        content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
+        post_data = self.rfile.read(content_length) # <--- Gets the data itself
+        print(post_data)
 
     def do_HEAD(self):
         #self._set_headers()
@@ -24,8 +27,13 @@ class S(BaseHTTPRequestHandler):
         #self._set_headers()
         #self.wfile.write("<html><body><h1>POST!</h1></body></html>")
         print("hi post")
+        content_length = int(self.headers['Content-Length'])
+        post_data = self.rfile.read(content_length)
+        print(post_data)
         
-def run(server_class=HTTPServer, handler_class=S, port=80):
+
+
+def run(server_class=HTTPServer, handler_class=S, port=8000):
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
     print('Starting httpd...')
