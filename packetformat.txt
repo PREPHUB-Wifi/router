@@ -1,0 +1,11 @@
+packet format
+
+inner: [to, id, data]
+to: 1-byte prephub identifier--final dest
+id: 3-byte identifier, first byte is hub it's from
+data: 58-byte arbitrary string
+
+outer: [to, which, howmany, inner]
+to: 1-byte final destination hub
+which: 1-byte packet numer
+howmany: 1-byte expected number of packets in stream
