@@ -31,7 +31,7 @@ class S(BaseHTTPRequestHandler):
         print("hi post")
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
-        #format for radio.send
+        #format for radio.send - bytearray
         #can put radio in outer scope depending on how this is launched
         print(post_data)
 
