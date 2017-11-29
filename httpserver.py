@@ -3,8 +3,11 @@
 #from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import socketserver
+from threading import Thread
 
 import listener
+import radio
+import config
 
 class S(BaseHTTPRequestHandler):
     def _set_headers(self):
@@ -28,15 +31,21 @@ class S(BaseHTTPRequestHandler):
         print("hi post")
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
+        #format for radio.send
+        #can put radio in outer scope depending on how this is launched
         print(post_data)
 
 
-def run(server_class=HTTPServer, handler_class=S, port=80):
-	#TODO: launch listener in new thread
-	#TODO: handle radio locking
+def run(server_class=HTTPServer, handler_class=S, port=80, baud=9600):
+    # init radio, start thread that handles incoming packets from radio
+    radio = radio.radio(port, baud)
+	listener_thread = Thread(target = listener.listen_forever(), args = (radio))
+    thread.start()
+
+    # start server
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
-    print('Starting httpd...')
+    print("Starting httpd...")
     httpd.serve_forever()
 
 if __name__ == "__main__":

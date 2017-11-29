@@ -9,3 +9,5 @@ outer: [to, which, howmany, inner]
 to: 1-byte final destination hub
 which: 1-byte packet numer
 howmany: 1-byte expected number of packets in stream
+
+[to(1) : which(1) : howmany(1) : [to(1) : id(3) : data(58)]]
