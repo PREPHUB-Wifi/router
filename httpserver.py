@@ -34,7 +34,7 @@ class S(BaseHTTPRequestHandler):
         print(post_data)
 
 
-def run(server_class=HTTPServer, handler_class=S, port=80):
+def run(server_class=HTTPServer, handler_class=S, port=config.PORT):
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
     print("Starting httpd...")
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     # init radio, start thread that handles incoming packets from radio
     radio = radio.Radio(config.SERIALPORT, config.BAUD)
     listener_thread = Thread(target = listener.listen_forever, args = (radio,))
-    listener_thread.start()
+    #listener_thread.start()
 
     if len(argv) == 2:
         run(port=int(argv[1]))

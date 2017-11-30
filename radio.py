@@ -10,26 +10,28 @@ class Radio:
 		time.sleep(2) # give time to initialize
 
 	def listen(self):
-		return self.ser.readline() #read(num) for bytes. timeout?
+		return self.ser.read(64)
 
 	def send(self, message):
-		print("radio is sending: ", message)
+		print("radio is sending message: ", message)
 		mslices = self.slice_message(message)
-		for mslice in mslices:
-			#can do fancier stuff here
-			packet = self.encap(mslice)
+		howmany = len(mslices)
+		to = message[0]
+		nextdest = None #TODO
+		for i in range(howmany):
+			which = i + 1
+			packet = self.encap(nextdest, which, howmany, mslices[i])
+			print("radio is sending packet: ", packet.decode('utf-8'))
 			self.ser.write(packet)
 
 	def slice_message(self, message):
 		return [message[i:i+config.MLENGTH] for i in \
 			range(0, len(message), config.MLENGTH)]
 
-	def encap(self, mslice):
-		#TODO: bit twiddling
-		return mslice
+	def encap(self, nextdest, which, howmany, mslice):
+		dest = str(nextdest)
+		wh = str(which)
+		hm = str(howmany)
+		entire = dest + wh + hm
+		return bytes(entire, 'utf-8') + mslice
 
-
-if __name__ == "__main__":
-	port = '/dev/cu.usbmodem1421'
-	baud = 9600
-	radio = Radio(port, baud)
