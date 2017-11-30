@@ -118,7 +118,8 @@ void setup()
 void loop() {
   delay(1000);  // Wait 1 second between transmits, could also 'sleep' here!
 
-  char radiopacket[20] = Serial.read();
+  char radiopacket[64];
+  Serial.readBytes(radiopacket, 64);
   itoa(packetnum++, radiopacket+13, 10);
   Serial.print("Sending "); Serial.println(radiopacket);
   
