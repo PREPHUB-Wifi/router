@@ -18,7 +18,8 @@ def push_info(json_packet):
 
 # [to(1) : which(1) : howmany(1) : [to(1) : id(3) : data(58)]]
 def parse(packet):
-
+	text = binary_data.decode('utf-8')
+	return {to: text[0], which: text[1], howmany: text[2], data: text[3:]}
 
 
 def listen_forever(radio):

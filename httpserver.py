@@ -25,24 +25,16 @@ class S(BaseHTTPRequestHandler):
         print("hi head")
         
     def do_POST(self):
-        # Doesn't do anything with posted data
         #self._set_headers()
         #self.wfile.write("<html><body><h1>POST!</h1></body></html>")
         print("hi post")
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
-        #format for radio.send - bytearray
-        #can put radio in outer scope depending on how this is launched
+        radio.send(post_data)
         print(post_data)
 
 
-def run(server_class=HTTPServer, handler_class=S, port=80, baud=9600):
-    # init radio, start thread that handles incoming packets from radio
-    radio = radio.radio(port, baud)
-	listener_thread = Thread(target = listener.listen_forever(), args = (radio))
-    thread.start()
-
-    # start server
+def run(server_class=HTTPServer, handler_class=S, port=80):
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
     print("Starting httpd...")
@@ -50,6 +42,10 @@ def run(server_class=HTTPServer, handler_class=S, port=80, baud=9600):
 
 if __name__ == "__main__":
     from sys import argv
+    # init radio, start thread that handles incoming packets from radio
+    radio = radio.Radio(config.SERIALPORT, config.BAUD)
+    listener_thread = Thread(target = listener.listen_forever, args = (radio,))
+    listener_thread.start()
 
     if len(argv) == 2:
         run(port=int(argv[1]))

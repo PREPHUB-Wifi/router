@@ -13,19 +13,20 @@ class Radio:
 		return self.ser.readline() #read(num) for bytes. timeout?
 
 	def send(self, message):
-		print "radio is sending: ", message
-		mslices = slice_message(message)
+		print("radio is sending: ", message)
+		mslices = self.slice_message(message)
 		for mslice in mslices:
 			#can do fancier stuff here
-			packet = encap(mslice)
+			packet = self.encap(mslice)
 			self.ser.write(packet)
 
 	def slice_message(self, message):
 		return [message[i:i+config.MLENGTH] for i in \
-			range(0, len(line), config.MLENGTH)]
+			range(0, len(message), config.MLENGTH)]
 
-	def encap(mslice):
+	def encap(self, mslice):
 		#TODO: bit twiddling
+		return mslice
 
 
 if __name__ == "__main__":

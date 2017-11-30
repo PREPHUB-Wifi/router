@@ -5,3 +5,4 @@ MLENGTH = 58
 SERIALPORT = '/dev/cu.usbmodem1421'
 
 BAUD = 9600
+PORT = 80
