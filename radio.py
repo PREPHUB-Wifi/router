@@ -10,14 +10,16 @@ class Radio:
 		time.sleep(2) # give time to initialize
 
 	def listen(self):
-		return self.ser.read(64)
+		incoming = self.ser.read(64)
+		self.ser.reset_input_buffer()
+		return incoming
 
 	def send(self, message):
 		print("radio is sending message: ", message)
 		mslices = self.slice_message(message)
 		howmany = len(mslices)
 		to = message[0]
-		nextdest = None #TODO
+		nextdest = 0 #TODO
 		for i in range(howmany):
 			which = i + 1
 			packet = self.encap(nextdest, which, howmany, mslices[i])
