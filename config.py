@@ -2,7 +2,7 @@
 # use elsewhere as config.whatever
 
 MLENGTH = 58
-SERIALPORT = '/dev/cu.usbmodem1421'
+SERIALPORT = '/dev/cu.usbmodem1411'
 
 BAUD = 9600
 PORT = 8000

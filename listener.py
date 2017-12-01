@@ -18,6 +18,7 @@ def push_info(message):
 
 # [to(1) : which(1) : howmany(1) : [to(1) : id(3) : data(58)]]
 def parse(packet):
+	print(packet)
 	text = packet.decode('utf-8')
 	return {"to": text[0], "which": text[1], "howmany": text[2], \
 		"dest" : text[3], "data": text[3:]}
@@ -26,6 +27,7 @@ def parse(packet):
 def listen_forever(radio):
 	print("launched listener thread")
 	while True:
+		print("listening")
 		data = radio.listen()
 		parsedict = parse(data)
 

@@ -45,7 +45,7 @@ if __name__ == "__main__":
     # init radio, start thread that handles incoming packets from radio
     radio = radio.Radio(config.SERIALPORT, config.BAUD)
     listener_thread = Thread(target = listener.listen_forever, args = (radio,))
-    #listener_thread.start()
+    listener_thread.start()
 
     if len(argv) == 2:
         run(port=int(argv[1]))

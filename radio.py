@@ -32,6 +32,9 @@ class Radio:
 		dest = str(nextdest)
 		wh = str(which)
 		hm = str(howmany)
-		entire = dest + wh + hm
+		prefix = dest + wh + hm
+		withprefix = bytes(prefix, 'utf-8') + mslice
+		message = withprefix + bytes(64-len(withprefix))
+		assert len(message) == 64
 		return bytes(entire, 'utf-8') + mslice
 
