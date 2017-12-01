@@ -36,5 +36,5 @@ class Radio:
 		withprefix = bytes(prefix, 'utf-8') + mslice
 		message = withprefix + bytes(64-len(withprefix))
 		assert len(message) == 64
-		return bytes(entire, 'utf-8') + mslice
+		return bytes(message, 'utf-8') + mslice
 
