@@ -41,6 +41,7 @@ def listen_forever(radio):
 				pass
 		except:
 			print("error decoding")
+			print(data.decode('utf-8'))
 			# probably half-sent garbage
 
 

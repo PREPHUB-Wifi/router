@@ -122,7 +122,7 @@ void loop() {
     uint8_t len = sizeof(buf);
     if (rf69.recv(buf, &len)) {
       if (!len) return;
-      buf[len] = 0;
+      buf[len] = '\n';
       Serial.print((char*)buf);
       memset(buf, 0, sizeof(buf));   // Clear contents of Buffer
       //Serial.flush();
