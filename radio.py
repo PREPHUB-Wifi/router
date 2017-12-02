@@ -10,7 +10,7 @@ class Radio:
 		time.sleep(2) # give time to initialize
 
 	def listen(self):
-		print("listening...")
+		#print("listening...")
 		return self.ser.readline()
 
 	def send(self, message):

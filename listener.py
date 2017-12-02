@@ -18,7 +18,7 @@ def push_info(message):
 
 # [to(1) : which(1) : howmany(1) : [to(1) : id(3) : data(58)]]
 def parse(packet):
-	print(packet)
+	#print(packet)
 	text = packet.decode('utf-8')
 	return {"to": text[0], "which": text[1], "howmany": text[2], \
 		"dest" : text[3], "data": text[3:]}
@@ -28,16 +28,20 @@ def listen_forever(radio):
 	print("launched listener thread")
 	while True:
 		data = radio.listen()
-		parsedict = parse(data)
+		try:
+			parsedict = parse(data)
 
-		print("received: ", parsedict)
+			print("received: ", parsedict)
 
-		if parsedict["dest"] == config.HUB:
-			print("pushing ", parsedict["data"], " to server")
-			push_info(parsedict["data"])
+			if parsedict["dest"] == config.HUB:
+				print("pushing ", parsedict["data"], " to server")
+				push_info(parsedict["data"])
 
-		elif parsedict["to"] == config.HUB:
-			pass
+			elif parsedict["to"] == config.HUB:
+				pass
+		except:
+			print("error decoding")
+			# probably half-sent garbage
 
 
 
