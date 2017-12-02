@@ -39,6 +39,10 @@ class S(BaseHTTPRequestHandler):
             packet = self.encap(nextdest, which, howmany, mslices[i])
             radio.send(packet)
 
+    def slice_message(self, message):
+        return [message[i:i+config.MLENGTH] for i in \
+            range(0, len(message), config.MLENGTH)]
+
     def encap(self, nextdest, which, howmany, mslice):
         dest = str(nextdest)
         wh = str(which)
