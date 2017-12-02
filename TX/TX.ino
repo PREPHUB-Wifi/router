@@ -117,11 +117,8 @@ void setup()
 
 void loop() {
   char radiopacket[64];
-  Serial.readBytes(radiopacket, 64);
+  Serial.readBytesUntil('\n', radiopacket, 64);
   itoa(packetnum++, radiopacket+13, 10);
-  //Serial.print("Sending "); Serial.println(radiopacket);
-  
-  // Send a message!
   rf69.send((uint8_t *)radiopacket, strlen(radiopacket));
   rf69.waitPacketSent();
   Blink(LED, 40, 3); //blink LED 3 times, 40ms between blinks 

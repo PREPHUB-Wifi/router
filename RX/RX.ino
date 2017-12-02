@@ -124,6 +124,8 @@ void loop() {
       if (!len) return;
       buf[len] = 0;
       Serial.print((char*)buf);
+      memset(buf, 0, sizeof(buf));   // Clear contents of Buffer
+      //Serial.flush();
       Blink(LED, 40, 3); //blink LED 3 times, 40ms between blinks
     }
   }

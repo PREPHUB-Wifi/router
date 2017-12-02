@@ -10,9 +10,8 @@ class Radio:
 		time.sleep(2) # give time to initialize
 
 	def listen(self):
-		incoming = self.ser.read(64)
-		self.ser.reset_input_buffer()
-		return incoming
+		print("listening...")
+		return self.ser.readline()
 
 	def send(self, message):
 		print("radio is sending message: ", message)
@@ -35,8 +34,7 @@ class Radio:
 		wh = str(which)
 		hm = str(howmany)
 		prefix = dest + wh + hm
-		withprefix = bytes(prefix, 'utf-8') + mslice
-		message = withprefix + bytes(64-len(withprefix))
-		assert len(message) == 64
+		message = bytes(prefix, 'utf-8') + mslice + bytes('\n', 'utf-8')
+		assert len(message) <= 64
 		return message
 

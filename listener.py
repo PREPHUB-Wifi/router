@@ -27,7 +27,6 @@ def parse(packet):
 def listen_forever(radio):
 	print("launched listener thread")
 	while True:
-		print("listening")
 		data = radio.listen()
 		parsedict = parse(data)
 

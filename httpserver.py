@@ -18,20 +18,18 @@ class S(BaseHTTPRequestHandler):
     def do_GET(self):
         #self._set_headers()
         #self.wfile.write("<html><body><h1>hi!</h1></body></html>")
-        print("hi get")
+        pass
 
     def do_HEAD(self):
         #self._set_headers()
-        print("hi head")
+        pass
         
     def do_POST(self):
         #self._set_headers()
         #self.wfile.write("<html><body><h1>POST!</h1></body></html>")
-        print("hi post")
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
         radio.send(post_data)
-        print(post_data)
 
 
 def run(server_class=HTTPServer, handler_class=S, port=config.PORT):
