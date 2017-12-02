@@ -21,7 +21,7 @@ def parse(packet):
 	#print(packet)
 	text = packet.decode('utf-8')
 	return {"to": text[0], "which": text[1], "howmany": text[2], \
-		"dest" : text[3], "data": text[3:]}
+		"dest" : text[3], "id": text[3:6], "data": text[3:]}
 
 
 def listen_forever(radio):

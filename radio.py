@@ -13,17 +13,9 @@ class Radio:
 		#print("listening...")
 		return self.ser.readline()
 
-	def send(self, message):
-		print("radio is sending message: ", message)
-		mslices = self.slice_message(message)
-		howmany = len(mslices)
-		to = message[0]
-		nextdest = 0 #TODO
-		for i in range(howmany):
-			which = i + 1
-			packet = self.encap(nextdest, which, howmany, mslices[i])
-			print("radio is sending packet: ", packet.decode('utf-8'))
-			self.ser.write(packet)
+	def send(self, packet):
+		print("radio is sending packet: ", packet.decode('utf-8'))
+		self.ser.write(packet)
 
 	def slice_message(self, message):
 		return [message[i:i+config.MLENGTH] for i in \

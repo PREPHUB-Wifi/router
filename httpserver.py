@@ -28,9 +28,25 @@ class S(BaseHTTPRequestHandler):
         #self._set_headers()
         #self.wfile.write("<html><body><h1>POST!</h1></body></html>")
         content_length = int(self.headers['Content-Length'])
-        post_data = self.rfile.read(content_length)
-        radio.send(post_data)
+        message = self.rfile.read(content_length)
+        print("radio is sending message: ", message)
+        mslices = self.slice_message(message)
+        howmany = len(mslices)
+        to = message[0]
+        nextdest = 0 #TODO
+        for i in range(howmany):
+            which = i + 1
+            packet = self.encap(nextdest, which, howmany, mslices[i])
+            radio.send(packet)
 
+    def encap(self, nextdest, which, howmany, mslice):
+        dest = str(nextdest)
+        wh = str(which)
+        hm = str(howmany)
+        prefix = dest + wh + hm
+        message = bytes(prefix, 'utf-8') + mslice + bytes('\n', 'utf-8')
+        assert len(message) <= 64
+        return message
 
 def run(server_class=HTTPServer, handler_class=S, port=config.PORT):
     server_address = ('', port)
