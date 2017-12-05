@@ -27,11 +27,6 @@ class S(BaseHTTPRequestHandler):
             h.request('POST', '/notes', data_encoded, headers)
             r = h.getresponse()
             print(r.read())
-        else:
-            #spawn sync, pass in the hash and 0/2
-
-
-        pass
 
     def do_HEAD(self):
         #self._set_headers()

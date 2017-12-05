@@ -113,15 +113,14 @@ void setup()
   Serial.print("RFM69 radio @");  Serial.print((int)RF69_FREQ);  Serial.println(" MHz");
 }
 
-
-
 void loop() {
+  delay(1000);
   char radiopacket[64];
   Serial.readBytesUntil('\n', radiopacket, 64);
-  rf69.send((uint8_t *)radiopacket, sizeof(radiopacket));
+  rf69.send((uint8_t *)radiopacket, strlen(radiopacket));
   rf69.waitPacketSent();
   memset(radiopacket, 0, sizeof(radiopacket));
-  Blink(LED, 40, 3); //blink LED 3 times, 40ms between blinks 
+  Blink(LED, 40, 3);
 }
 
 void Blink(byte PIN, byte DELAY_MS, byte loops) {

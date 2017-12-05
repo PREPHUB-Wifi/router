@@ -79,7 +79,7 @@ void setup()
   pinMode(RFM69_RST, OUTPUT);
   digitalWrite(RFM69_RST, LOW);
 
-  Serial.println("Feather RFM69 RX Test!");
+  Serial.println("Feather RFM69 TX Test!");
   Serial.println();
 
   // manual reset
@@ -93,7 +93,6 @@ void setup()
     while (1);
   }
   Serial.println("RFM69 radio init OK!");
-  
   // Defaults after init are 434.0MHz, modulation GFSK_Rb250Fd250, +13dbM (for low power module)
   // No encryption
   if (!rf69.setFrequency(RF69_FREQ)) {
@@ -115,22 +114,20 @@ void setup()
 }
 
 
-void loop() {
- if (rf69.available()) {
-    uint8_t buf[64];
-    uint8_t len = sizeof(buf);
-    if (rf69.recv(buf, &len)) {
-      if (!len) return;
-      for (int i = 0; i < len; i++) {
-        Serial.print((char*)buf[i]);
-      }
-      Serial.print('\n');
-      memset(buf, 0, sizeof(buf));
-      Blink(LED, 40, 3);
-    }
-  }
-}
 
+void loop() {
+  delay(1000);  // Wait 1 second between transmits, could also 'sleep' here!
+
+  char radiopacket[64] = "Hello World #";
+  Serial.readBytesUntil('\n', radiopacket, 64);
+  
+  // Send a message!
+  rf69.send((uint8_t *)radiopacket, strlen(radiopacket));
+  rf69.waitPacketSent();
+  memset(radiopacket, 0, sizeof(radiopacket));
+  Blink(LED, 40, 3);
+
+}
 
 void Blink(byte PIN, byte DELAY_MS, byte loops) {
   for (byte i=0; i<loops; i++)  {
