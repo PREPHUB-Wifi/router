@@ -29,9 +29,7 @@ class S(BaseHTTPRequestHandler):
             print(r.read())
         else:
             #spawn sync, pass in the hash and 0/2
-
-
-        pass
+            pass
 
     def do_HEAD(self):
         #self._set_headers()

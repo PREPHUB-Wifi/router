@@ -118,10 +118,10 @@ void setup()
 void loop() {
   char radiopacket[64];
   Serial.readBytesUntil('\n', radiopacket, 64);
+  Blink(LED, 40, 3); //blink LED 3 times, 40ms between blinks
   rf69.send((uint8_t *)radiopacket, sizeof(radiopacket));
   rf69.waitPacketSent();
-  memset(radiopacket, 0, sizeof(radiopacket));
-  Blink(LED, 40, 3); //blink LED 3 times, 40ms between blinks 
+  memset(radiopacket, 0, sizeof(radiopacket)); 
 }
 
 void Blink(byte PIN, byte DELAY_MS, byte loops) {
