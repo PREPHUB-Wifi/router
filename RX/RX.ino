@@ -122,8 +122,12 @@ void loop() {
     uint8_t len = sizeof(buf);
     if (rf69.recv(buf, &len)) {
       if (!len) return;
-      buf[len] = '\n';
-      Serial.print((char*)buf);
+      for (int i = 0; i < len; i++) {
+        Serial.print((char)buf[i]);
+      }
+      Serial.print('\n');
+      //Serial.print((char*)buf);
+      //Serial.print('\n');
       memset(buf, 0, sizeof(buf));   // Clear contents of Buffer
       //Serial.flush();
       Blink(LED, 40, 3); //blink LED 3 times, 40ms between blinks
