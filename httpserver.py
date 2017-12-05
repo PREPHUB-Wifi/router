@@ -7,7 +7,8 @@ from threading import Thread
 
 import listener
 import radio
-import config
+import config 
+import subprocess
 
 class S(BaseHTTPRequestHandler):
     def _set_headers(self):
@@ -16,8 +17,20 @@ class S(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        #self._set_headers()
-        #self.wfile.write("<html><body><h1>hi!</h1></body></html>")
+        content_length = int(self.headers['Content-Length'])
+        message = self.rfile.read(content_length)
+        data = JSON.dumps(message)
+        if(data["no_sync"] == 1): 
+            data_encoded = urlencode(data)
+            h = http.client.HTTPConnection('127.0.0.1:8443')
+            headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
+            h.request('POST', '/notes', data_encoded, headers)
+            r = h.getresponse()
+            print(r.read())
+        else:
+            #spawn sync, pass in the hash and 0/2
+
+
         pass
 
     def do_HEAD(self):
