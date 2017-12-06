@@ -8,3 +8,5 @@ BAUD = 9600
 PORT = 8000
 
 HUB = 0
+
+MAX_TTL = 5

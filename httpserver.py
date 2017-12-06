@@ -42,20 +42,22 @@ class S(BaseHTTPRequestHandler):
         howmany = len(mslices)
         to = message[0]
         nextdest = 0 #TODO
+        ttl = config.MAX_TTL #TODO
         for i in range(howmany):
             which = i + 1
-            packet = self.encap(nextdest, which, howmany, mslices[i])
+            packet = self.encap(nextdest, which, howmany, ttl, mslices[i])
             radio.send(packet)
 
     def slice_message(self, message):
         return [message[i:i+config.MLENGTH] for i in \
             range(0, len(message), config.MLENGTH)]
 
-    def encap(self, nextdest, which, howmany, mslice):
+    def encap(self, nextdest, which, howmany, ttl, mslice):
         dest = str(nextdest)
         wh = str(which)
         hm = str(howmany)
-        prefix = dest + wh + hm
+        ttl = str(ttl)
+        prefix = dest + wh + hm + ttl
         message = bytes(prefix, 'utf-8') + mslice + bytes('\n', 'utf-8')
         assert len(message) <= 64
         return message

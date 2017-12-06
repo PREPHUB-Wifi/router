@@ -20,8 +20,8 @@ def push_info(message):
 def parse(packet):
 	#print(packet)
 	text = packet.decode('utf-8')
-	return {"to": text[0], "which": text[1], "howmany": text[2], \
-		"dest" : text[3], "id": text[3:6], "data": text[3:]}
+	return {"to":text[0], "which":text[1], "howmany":text[2], \
+		"ttl":text[3], "dest":text[4], "id":text[4:6], "data":text[4:]}
 
 
 def listen_forever(radio):
@@ -32,13 +32,13 @@ def listen_forever(radio):
 			parsedict = parse(data)
 
 			print("received: ", parsedict)
+			print("pushing ", parsedict["data"], " to server")
+			push_info(parsedict["data"])
 
-			if parsedict["dest"] == config.HUB:
-				print("pushing ", parsedict["data"], " to server")
-				push_info(parsedict["data"])
-
-			elif parsedict["to"] == config.HUB:
+			if parsedict["ttl"] > 0:
+				#forward
 				pass
+
 		except:
 			print("error decoding")
 			print(data.decode('utf-8'))
