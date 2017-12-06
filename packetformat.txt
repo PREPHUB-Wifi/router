@@ -5,9 +5,9 @@ to: 1-byte prephub identifier--final dest
 id: 3-byte identifier, first byte is hub it's from
 data: 58-byte arbitrary string
 
-outer: [to, which, howmany, inner]
+outer: [to, which, howmany, ttl, inner]
 to: 1-byte final destination hub
 which: 1-byte packet numer
 howmany: 1-byte expected number of packets in stream
 
-[to(1) : which(1) : howmany(1) : ttl (1) [to(1) : id(3) : data(58)]]
+[to_immediate(1) : which(1) : howmany(1) : ttl (1) [to_final(1) : id(3) : data(58)]]
