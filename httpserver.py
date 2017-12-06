@@ -47,6 +47,10 @@ class S(BaseHTTPRequestHandler):
             which = i + 1
             packet = self.encap(nextdest, which, howmany, ttl, mslices[i])
             radio.send(packet)
+        self.send_response(200, "{}")
+        self.end_headers()
+        #self.wfile.write()
+        return
 
     def slice_message(self, message):
         return [message[i:i+config.MLENGTH] for i in \
