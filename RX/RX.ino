@@ -115,11 +115,13 @@ void setup()
 }
 
 
-void loop() {
+void loop() { 
+
  if (rf69.available()) {
     // Should be a message for us now   
     uint8_t buf[64];
     uint8_t len = sizeof(buf);
+    Blink(LED, 40, 3);
     if (rf69.recv(buf, &len)) {
       if (!len) return;
       for (int i = 0; i < len; i++) {

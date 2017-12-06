@@ -31,7 +31,19 @@ def listen_forever(radio):
 		try:
 			parsedict = parse(data)
 
-			print("received: ", parsedict)
+			print("received: ", parsedict) 
+			note = dict() 
+			note[hash] = '0'
+		  note[pckt_id] = undefined
+		  note[no_sync] = 0
+		  note[newName] = undefined
+		  note[needHelp] = undefined
+		  note[notes] = undefined
+		  note[time] = undefined 
+			data_encoded = urlencode(parsedict)
+			h = http.client.HTTPConnection('127.0.0.1:8443')
+			headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
+			h.request('POST', '/notes', data_encoded, headers)
 
 			if parsedict["dest"] == config.HUB:
 				print("pushing ", parsedict["data"], " to server")

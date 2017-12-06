@@ -17,18 +17,18 @@ class S(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        content_length = int(self.headers['Content-Length'])
-        message = self.rfile.read(content_length)
-        data = JSON.dumps(message)
-        if(data["no_sync"] == 1): 
-            data_encoded = urlencode(data)
-            h = http.client.HTTPConnection('127.0.0.1:8443')
-            headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
-            h.request('POST', '/notes', data_encoded, headers)
-            r = h.getresponse()
-            print(r.read())
-        else:
-            #spawn sync, pass in the hash and 0/2
+        # content_length = int(self.headers['Content-Length'])
+        # message = self.rfile.read(content_length)
+        # data = JSON.dumps(message)
+        # if(data["no_sync"] == 1): 
+        #     data_encoded = urlencode(data)
+        #     h = http.client.HTTPConnection('127.0.0.1:8443')
+        #     headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
+        #     h.request('POST', '/notes', data_encoded, headers)
+        #     r = h.getresponse()
+        #     print(r.read())
+        # else:
+        #     #spawn sync, pass in the hash and 0/2
 
 
         pass

@@ -116,8 +116,9 @@ void setup()
 
 
 void loop() {
-  char radiopacket[64];
-  Serial.readBytesUntil('\n', radiopacket, 64);
+  char radiopacket[64] = "Hello World";
+  Serial.readBytesUntil('\n', radiopacket, 64); 
+  Serial.print(radiopacket);
   rf69.send((uint8_t *)radiopacket, sizeof(radiopacket));
   rf69.waitPacketSent();
   memset(radiopacket, 0, sizeof(radiopacket));
