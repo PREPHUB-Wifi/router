@@ -115,7 +115,8 @@ void setup()
 
 void loop() {
   delay(1000);
-  char radiopacket[64];
+  char radiopacket[64] = {0};
+  
   Serial.readBytesUntil('\n', radiopacket, 64);
   rf69.send((uint8_t *)radiopacket, strlen(radiopacket));
   rf69.waitPacketSent();
