@@ -37,15 +37,15 @@ class S(BaseHTTPRequestHandler):
         #self.wfile.write("<html><body><h1>POST!</h1></body></html>")
         content_length = int(self.headers['Content-Length'])
         message = self.rfile.read(content_length)
-        print("radio is sending message: ", message)
-        mslices = self.slice_message(message)
         howmany = len(mslices)
         to = message[0]
-        nextdest = 0 #TODO
-        ttl = config.MAX_TTL #TODO
+        mid = message[1:4]
+        ttl = config.MAX_TTL
+        print("radio is sending message: ", message)
+        mslices = self.slice_message(message[4:])
         for i in range(howmany):
             which = i + 1
-            packet = self.encap(nextdest, which, howmany, ttl, mslices[i])
+            packet = self.encap(to, mid, which, howmany, ttl, mslices[i])
             radio.send(packet)
         self.send_response(200, "{}")
         self.end_headers()
@@ -56,12 +56,13 @@ class S(BaseHTTPRequestHandler):
         return [message[i:i+config.MLENGTH] for i in \
             range(0, len(message), config.MLENGTH)]
 
-    def encap(self, nextdest, which, howmany, ttl, mslice):
-        dest = str(nextdest)
+    def encap(self, to, mid, which, howmany, ttl, mslice):
+        to = str(to)
+        mid = str(mid)
         wh = str(which)
         hm = str(howmany)
         ttl = str(ttl)
-        prefix = dest + wh + hm + ttl
+        prefix = to + mid + wh + hm + ttl
         message = bytes(prefix, 'utf-8') + mslice + bytes('\n', 'utf-8')
         assert len(message) <= 64
         return message

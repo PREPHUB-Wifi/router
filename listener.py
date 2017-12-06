@@ -5,39 +5,44 @@ import http.client
 import time
 from datetime import date
 import config
+import requests
 
 def push_info(message):
 	#data = parse apart info in json object 
 	#make sure strings aren't empty
 	data_encoded = urlencode(message)
-	h = http.client.HTTPConnection('127.0.0.1:8081')
+	h = http.client.HTTPConnection('127.0.0.1:8443') #TODO config
 	headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
 	h.request('POST', '/notes', data_encoded, headers)
 	r = h.getresponse()
 	print(r.read())
 
-# [to(1) : which(1) : howmany(1) : [to(1) : id(3) : data(58)]]
+
 def parse(packet):
 	#print(packet)
 	text = packet.decode('utf-8')
-	return {"to":text[0], "which":text[1], "howmany":text[2], \
-		"ttl":text[3], "dest":text[4], "id":text[4:6], "data":text[4:]}
+	return {"to":text[0], "mid":text[1:4], "which":text[4], "howmany":text[5], \
+		"ttl":text[6], "data":text[7:]}
 
 
 def listen_forever(radio):
+	#TODO: reassemble packets
 	print("launched listener thread")
 	while True:
 		data = radio.listen()
 		try:
 			parsedict = parse(data)
-
 			print("received: ", parsedict)
-			print("pushing ", parsedict["data"], " to server")
-			push_info(parsedict["data"])
 
-			if parsedict["ttl"] > 0:
+			if parsedict["dest"] == config.HUB or parsedict["dest"] == "*":
+				print("pushing ", parsedict["data"], " to server")
+				push_info(parsedict["data"])
+
+			if parsedict["ttl"] > 0 and parsedict["dest"] == "*":
 				#forward
-				pass
+				parsedict["ttl"] -=1
+				message = "" #TODO
+				r = requests.post('127.0.0.1:'+config.PORT, data=message)
 
 		except:
 			print("error decoding")
