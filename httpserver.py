@@ -42,12 +42,12 @@ class S(BaseHTTPRequestHandler):
         #self.wfile.write("<html><body><h1>POST!</h1></body></html>")
         content_length = int(self.headers['Content-Length'])
         message = self.rfile.read(content_length)
-        howmany = len(mslices)
         to = message[0]
         mid = message[1:4]
         ttl = config.MAX_TTL
         print("radio is sending message: ", message)
         mslices = self.slice_message(message[4:])
+        howmany = len(mslices)
         for i in range(howmany):
             which = i + 1
             packet = self.encap(to, mid, which, howmany, ttl, mslices[i])
