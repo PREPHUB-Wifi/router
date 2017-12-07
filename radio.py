@@ -20,13 +20,3 @@ class Radio:
 	def slice_message(self, message):
 		return [message[i:i+config.MLENGTH] for i in \
 			range(0, len(message), config.MLENGTH)]
-
-	def encap(self, nextdest, which, howmany, mslice):
-		dest = str(nextdest)
-		wh = str(which)
-		hm = str(howmany)
-		prefix = dest + wh + hm
-		message = bytes(prefix, 'utf-8') + mslice + bytes('\n', 'utf-8')
-		assert len(message) <= 64
-		return message
-
