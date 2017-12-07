@@ -10,6 +10,7 @@ import radio
 import config 
 import subprocess
 
+
 class S(BaseHTTPRequestHandler):
     def _set_headers(self):
         self.send_response(200)
@@ -18,7 +19,9 @@ class S(BaseHTTPRequestHandler):
 
     def do_GET(self):
         # content_length = int(self.headers['Content-Length'])
-        # message = self.rfile.read(content_length)
+        message = self.rfile.read(content_length)
+	listener.parse_incoming_data(data)
+
         # data = JSON.dumps(message)
         # if(data["no_sync"] == 1): 
         #     data_encoded = urlencode(data)
@@ -52,7 +55,9 @@ class S(BaseHTTPRequestHandler):
             for i in range(howmany):
                 which = i + 1
                 packet = self.encap(to, mid, which, howmany, ttl, mslices[i])
+		#listener.push_info("http://localhost:8001", packet)
                 radio.send(packet)
+	    
             self.send_response(200, "{}")
             self.end_headers()
             #self.wfile.write()
