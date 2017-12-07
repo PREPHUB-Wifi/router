@@ -1,8 +1,9 @@
 # put constants here, probably port, etc. 
 # use elsewhere as config.whatever
 
-MLENGTH = 52 #DO NOT TOUCH
-SERIALPORT = '/dev/ttyACM0'
+MLENGTH = 53 #DO NOT TOUCH
+#SERIALPORT = '/dev/ttyACM0'
+SERIALPORT = '/dev/cu.usbmodem1411'
 
 BAUD = 9600
 PORT = 8000

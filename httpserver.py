@@ -43,10 +43,10 @@ class S(BaseHTTPRequestHandler):
         content_length = int(self.headers['Content-Length'])
         message = self.rfile.read(content_length)
         try:
-            mslices = self.slice_message(message[3:])
+            mslices = self.slice_message(message[4:])
             howmany = len(mslices)
-            to = message[0]
-            mid = message[1:4]
+            to = message[0:1].decode('utf-8')
+            mid = message[1:4].decode('utf-8')
             ttl = config.MAX_TTL
             print("radio is sending message: ", message)
             for i in range(howmany):

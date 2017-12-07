@@ -5,7 +5,6 @@ import http.client
 import time
 from datetime import date
 import config
-import requests
 
 def push_info(message):
 	#data = parse apart info in json object 
