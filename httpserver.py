@@ -20,7 +20,7 @@ class S(BaseHTTPRequestHandler):
     def do_GET(self):
         # content_length = int(self.headers['Content-Length'])
         message = self.rfile.read(content_length)
-	listener.parse_incoming_data(data)
+        listener.parse_incoming_data(data)
 
         # data = JSON.dumps(message)
         # if(data["no_sync"] == 1): 
