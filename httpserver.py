@@ -42,20 +42,23 @@ class S(BaseHTTPRequestHandler):
         #self.wfile.write("<html><body><h1>POST!</h1></body></html>")
         content_length = int(self.headers['Content-Length'])
         message = self.rfile.read(content_length)
-        mslices = self.slice_message(message[4:])
-        howmany = len(mslices)
-        to = message[0]
-        mid = message[1:4]
-        ttl = config.MAX_TTL
-        print("radio is sending message: ", message)
-        for i in range(howmany):
-            which = i + 1
-            packet = self.encap(to, mid, which, howmany, ttl, mslices[i])
-            radio.send(packet)
-        self.send_response(200, "{}")
-        self.end_headers()
-        #self.wfile.write()
-        return
+        try:
+            mslices = self.slice_message(message[4:])
+            howmany = len(mslices)
+            to = message[0]
+            mid = message[1:4]
+            ttl = config.MAX_TTL
+            print("radio is sending message: ", message)
+            for i in range(howmany):
+                which = i + 1
+                packet = self.encap(to, mid, which, howmany, ttl, mslices[i])
+                radio.send(packet)
+            self.send_response(200, "{}")
+            self.end_headers()
+            #self.wfile.write()
+            return
+        except IndexError:
+            pass
 
     def slice_message(self, message):
         return [message[i:i+config.MLENGTH] for i in \
