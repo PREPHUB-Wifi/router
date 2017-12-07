@@ -72,6 +72,7 @@ class S(BaseHTTPRequestHandler):
         ttl = str(ttl)
         prefix = to + mid + wh + hm + ttl
         message = bytes(prefix, 'utf-8') + mslice + bytes('\n', 'utf-8')
+        print(message.decode('utf-8'))
         assert len(message) <= 64
         return message
 
