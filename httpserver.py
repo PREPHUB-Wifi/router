@@ -43,7 +43,7 @@ class S(BaseHTTPRequestHandler):
         content_length = int(self.headers['Content-Length'])
         message = self.rfile.read(content_length)
         try:
-            mslices = self.slice_message(message[4:])
+            mslices = self.slice_message(message[3:])
             howmany = len(mslices)
             to = message[0]
             mid = message[1:4]

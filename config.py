@@ -1,7 +1,7 @@
 # put constants here, probably port, etc. 
 # use elsewhere as config.whatever
 
-MLENGTH = 53 #DO NOT TOUCH
+MLENGTH = 52 #DO NOT TOUCH
 SERIALPORT = '/dev/ttyACM0'
 
 BAUD = 9600
