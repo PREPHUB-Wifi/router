@@ -6,7 +6,7 @@ import time
 from datetime import date
 import config
 
-def push_info(host, message):
+def push_info(message, host=config.HOST):
     #data = parse apart info in json object 
     #make sure strings aren't empty
     data_encoded = urlencode(message)
@@ -31,13 +31,12 @@ def listen_forever(radio):
     #TODO: reassemble packets
     print("launched listener thread")
     while True:
-        data = radio.listen()
-        parse_incoming_data(data, radio)
+        packet = radio.listen()
+        parse_incoming_data(packet, radio)
 
-def parse_incoming_data(data, TXradio):
+def parse_incoming_data(packet, TXradio):
     try:
-        parsedict = parse(data)
-        print("received: ", parsedict) 
+        parsedict = parse(packet)
         # note = dict() 
         # note[hash] = '0'
         # note[pckt_id] = parsedict[mid]
@@ -56,10 +55,10 @@ def parse_incoming_data(data, TXradio):
             print("pushing ", parsedict["data"], " to server")
             push_info(parsedict["data"])
 
-        if parsedict["ttl"] > 0 and parsedict["to"] == "*":
+        if int(parsedict["ttl"]) > 0 and parsedict["to"] == "*":
             #forward
-            data[6] = data[6]-1 #decrement ttl
-            TXradio.send(data)
+            packet = packet[0:6] + str(int(packet[6])-1) + packet[7:] #decrement ttl
+            TXradio.send(packet)
             #r = requests.post('127.0.0.1:'+config.PORT, data=message)
 
     except:
