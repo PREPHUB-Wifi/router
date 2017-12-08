@@ -53,11 +53,11 @@ def parse_incoming_data(packet, TXradio):
 
         if parsedict["to"] == config.HUB or parsedict["to"] == "*":
             print("pushing ", parsedict["data"], " to server")
-            push_info(parsedict["data"])
+            #push_info(parsedict["data"])
 
         if int(parsedict["ttl"]) > 0 and parsedict["to"] == "*":
             #forward
-            packet = packet[0:6] + str(int(packet[6])-1) + packet[7:] #decrement ttl
+            packet = packet[0:6] + bytes([int(packet[6])-1]) + packet[7:] #decrement ttl
             TXradio.send(packet)
             #r = requests.post('127.0.0.1:'+config.PORT, data=message)
 
