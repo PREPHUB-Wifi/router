@@ -55,9 +55,9 @@ class S(BaseHTTPRequestHandler):
             for i in range(howmany):
                 which = i + 1
                 packet = self.encap(to, mid, which, howmany, ttl, mslices[i])
-		#listener.push_info("http://localhost:8001", packet)
+        #listener.push_info("http://localhost:8001", packet)
                 radio.send(packet)
-	    
+        
             self.send_response(200, "{}")
             self.end_headers()
             #self.wfile.write()
