@@ -2,6 +2,8 @@
 # use elsewhere as config.whatever
 
 MLENGTH = 53 #DO NOT TOUCH
+
+# run ports.py to see what this should be
 #SERIALPORT = '/dev/ttyACM0'
 SERIALPORT = '/dev/cu.usbmodem1411'
 
@@ -10,6 +12,7 @@ PORT = 8000
 
 HUB = 0
 
+# run ttl.py to see what this should be
 MAX_TTL = 5
 
 #format:

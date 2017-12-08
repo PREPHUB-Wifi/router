@@ -118,15 +118,16 @@ void setup()
 void loop() { 
 
  if (rf69.available()) {
-    uint8_t buf[64];
+    uint8_t buf[RH_RF69_MAX_MESSAGE_LEN];
     uint8_t len = sizeof(buf);
     Blink(LED, 40, 3);
     if (rf69.recv(buf, &len)) {
       if (!len) return;
-      for (int i = 0; i < len; i++) {
-        Serial.print((char*)buf[i]);
-      }
-      Serial.print('\n');
+      buf[len] = 0;
+      Serial.print((char*)buf);
+      //for (int i = 0; i < len; i++) {
+      //  Serial.print((char*)buf[i]);
+      //}
       memset(buf, 0, sizeof(buf));
       Blink(LED, 40, 3);
     }

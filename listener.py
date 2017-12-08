@@ -27,14 +27,14 @@ def parse(packet):
         return {}
 
 
-def listen_forever(data):
+def listen_forever(radio):
     #TODO: reassemble packets
     print("launched listener thread")
     while True:
         data = radio.listen()
-        parse_incoming_data(data)
+        parse_incoming_data(data, radio)
 
-def parse_incoming_data(data):
+def parse_incoming_data(data, TXradio):
     try:
         parsedict = parse(data)
         print("received: ", parsedict) 
@@ -52,19 +52,18 @@ def parse_incoming_data(data):
         # h.request('POST', '/notes', data_encoded, headers)
         print("received: ", parsedict)
 
-        if parsedict["dest"] == config.HUB or parsedict["dest"] == "*":
+        if parsedict["to"] == config.HUB or parsedict["to"] == "*":
             print("pushing ", parsedict["data"], " to server")
             push_info(parsedict["data"])
 
-        if parsedict["ttl"] > 0 and parsedict["dest"] == "*":
+        if parsedict["ttl"] > 0 and parsedict["to"] == "*":
             #forward
-            parsedict["ttl"] -=1
-            message = "" #TODO
-            r = requests.post('127.0.0.1:'+config.PORT, data=message)
+            data[6] = data[6]-1 #decrement ttl
+            TXradio.send(data)
+            #r = requests.post('127.0.0.1:'+config.PORT, data=message)
 
     except:
         print("error decoding")
-        print(data.decode('utf-8'))
         # probably half-sent garbage
 
 

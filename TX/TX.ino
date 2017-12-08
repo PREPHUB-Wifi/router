@@ -114,13 +114,16 @@ void setup()
 }
 
 void loop() {
-  delay(1000);
-  char radiopacket[64] = {0};
-  
-  Serial.readBytesUntil('\n', radiopacket, 64);
-  rf69.send((uint8_t *)radiopacket, 64);
+  delay(200);
+  char radiopacket[64] = "x";
+  //memset(radiopacket, '.', 64);
+  for (int i = 0; i < 64; i++) {
+    radiopacket[i] = Serial.read();
+    if (radiopacket[i] == '\n') break;
+  }
+  rf69.send((uint8_t *)radiopacket, strlen(radiopacket));
   rf69.waitPacketSent();
-  memset(radiopacket, 0, sizeof(radiopacket));
+
   Blink(LED, 40, 3);
 }
 
