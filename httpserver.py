@@ -19,20 +19,8 @@ class S(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        # content_length = int(self.headers['Content-Length'])
         message = self.rfile.read(content_length)
         listener.parse_incoming_data(data)
-
-        # data = JSON.dumps(message)
-        # if(data["no_sync"] == 1): 
-        #     data_encoded = urlencode(data)
-        #     h = http.client.HTTPConnection('127.0.0.1:8443')
-        #     headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
-        #     h.request('POST', '/notes', data_encoded, headers)
-        #     r = h.getresponse()
-        #     print(r.read())
-        # else:
-        #     #spawn sync, pass in the hash and 0/2
 
 
         pass
@@ -98,10 +86,10 @@ if __name__ == "__main__":
     from sys import argv
     # init radio, start thread that handles incoming packets from radio
 
-    radio_TX = internetRadio.Radio( None, 7000,'elpis.mit.edu' )
-    #radio_RX = internetRadio.Radio( 7001, None ,'' )
-    #listener_thread = Thread(target = listener.listen_forever, args = (radio_RX,))
-    #listener_thread.start()
+    radio_TX = internetRadio.Radio( None, 7000,'' )
+    radio_RX = internetRadio.Radio( 7001, None ,'' )
+    listener_thread = Thread(target = listener.listen_forever, args = (radio_RX,))
+    listener_thread.start()
 
     if len(argv) == 2:
         run(port=int(argv[1]))
