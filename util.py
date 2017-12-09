@@ -44,8 +44,9 @@ def encap(to, mid, which, howmany, ttl, mslice):
 
 #decodes str pkt into a dictionary
 def decode(pkt):
+    stripped_data = pkt[7:].strip().replace('\n','')
     #pkt = pkt.decode('utf-8')
     return {"to":pkt[0], "mid":pkt[1:4], "which":pkt[4], "howmany":pkt[5], \
-                        "ttl":pkt[6], "data":pkt[7:]}
+                        "ttl":pkt[6], "data":stripped_data}
 
 

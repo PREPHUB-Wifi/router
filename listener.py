@@ -41,17 +41,13 @@ def listen_forever(radio):
     message = None
     while True:
         packet = radio.listen()
-        print("listen forever got a packet", packet)
         message = a.new(packet)
         if(message):
             handle_completed_message(message, radio)
 
 def handle_completed_message(message, TXradio):  
-    print()
-    print("raw message handle_completed_message", message)
     message_json = json.loads(message)
     s = json.dumps(message_json, indent=4, sort_keys=True) 
-    print(s)
 
     # if parsedict["to"] == config.HUB or parsedict["to"] == "*":
     #     print("pushing ", parsedict["data"], " to server")

@@ -8,7 +8,7 @@ MLENGTH = 53 #DO NOT TOUCH
 SERIALPORT = '/dev/cu.usbmodem1411'
 
 BAUD = 9600
-PORT = 8000
+PORT = 8002
 
 HUB = 0
 

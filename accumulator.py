@@ -15,15 +15,9 @@ class Accumulator():
         #packet = bytes(packet, 'utf-8')
         #text = packet.decode('utf-8')
         text = packet
-        print("Accumulator received packet: ", text)
-        print("Accumulator received type: ", type(text))
-        print("Accumulator received type: pkt ", type(packet))
-        print()
         
         packet_dict = util.decode(packet)         #packet_dict = {"to":text[0], "mid":text[1:7], "which":text[7], "howmany":text[8], \
         #    "ttl":text[9], "data":text[10:]}
-
-        print("Accumulator parsed packet: ", packet_dict)
 
         # either add to collection of packets for that message id or start new
         if packet_dict["mid"] in self.blobs.keys():
@@ -69,7 +63,7 @@ class Blob():
         data = ""
         for i in range(1, self.howmany+1):
             data += self.packet_dict_dict[i]["data"]
-        return prefix + data
+        return data
 
 
 

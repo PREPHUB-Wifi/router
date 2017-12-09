@@ -14,6 +14,8 @@ class Radio:
         if(myPort!=None):
             self.sock.bind(('0.0.0.0', self.myPort))
             self.sock.listen(10)
+        if(theirPort!=None):
+            self.sock.connect((self.hostname, self.theirPort))
 
     def listen(self):
         if (self.csock == None): 
@@ -30,7 +32,9 @@ class Radio:
             chunks.append(chunk)
             bytes_recd = bytes_recd + len(chunk)
 
-        message = ''.join(str(chunks))
+        message = ''
+        for each in chunks:
+            message = message + (each.decode('utf-8'))
         print("internet radio got pkt:", message)
         return message
 
@@ -39,9 +43,8 @@ class Radio:
         #send a message to another InternetRadio class that is listening
         print("Sending to "+ self.hostname + ":" + str(self.theirPort))
         total_bytes_sent = 0
-        self.sock.connect((self.hostname, self.theirPort))
         while total_bytes_sent < config.MLENGTH:
-            sent = self.sock.send(bytes(pkt[total_bytes_sent:],'utf-8'))
+            sent = self.sock.send(bytes(pkt[total_bytes_sent:], 'utf-8'))
             if sent == 0:
                 raise RuntimeError("socket connection broken")
             total_bytes_sent += sent
