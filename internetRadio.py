@@ -10,29 +10,29 @@ class Radio:
         self.hostname = hostname
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        #if(myPort==None):
-        
-
-        print("Hang on bro")
+        self.csock = None
+        if(myPort!=None):
+            self.sock.bind(('0.0.0.0', self.myPort))
+            self.sock.listen(10)
 
     def listen(self):
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind(('0.0.0.0', self.myPort))
-        s.listen(1)
-        csock, caddr = s.accept()
+        if (self.csock == None): 
+            #connecting for the first time 
+            self.csock, caddr = self.sock.accept()
+            print("internet radio accepted con:", caddr)
         chunks = []
         bytes_recd = 0
-        while bytes_recd < config.MLENGTH:
-            chunk = csock.recv(min(config.MLENGTH - bytes_recd, 2048))
+        while bytes_recd < 64:
+            chunk = self.csock.recv(min(64 - bytes_recd, 2048))
+            #print("internet radio got chunk!", chunk)
             if chunk == '':
                 raise RuntimeError("socket connection broken")
             chunks.append(chunk)
             bytes_recd = bytes_recd + len(chunk)
 
         message = ''.join(str(chunks))
-        print(message)
+        print("internet radio got pkt:", message)
         return message
-
 
     #sends a single 64 byte pkt
     def send(self, pkt):
@@ -48,6 +48,6 @@ class Radio:
         return
 
 if __name__ == "__main__":
-    radio = InternetRadio(8001,8000, "")
+    radio = Radio(8001,8000, "")
     radio.listen()
 

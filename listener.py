@@ -24,7 +24,9 @@ def push_info(message, host=config.HOST):
 
 def parse(packet):
     #print(packet)
-    text = packet.decode('utf-8')
+    #text = packet.decode('utf-8')
+    text = packet
+    print("I don't think it makes it past this line", packet)
     try:
         return {"to":text[0], "mid":text[1:4], "which":text[4], "howmany":text[5], \
             "ttl":text[6], "data":text[7:]}
@@ -39,11 +41,14 @@ def listen_forever(radio):
     message = None
     while True:
         packet = radio.listen()
+        print("listen forever got a packet", packet)
         message = a.new(packet)
         if(message):
             handle_completed_message(message, radio)
 
 def handle_completed_message(message, TXradio):  
+    print()
+    print("raw message handle_completed_message", message)
     message_json = json.loads(message)
     s = json.dumps(message_json, indent=4, sort_keys=True) 
     print(s)
@@ -56,7 +61,3 @@ def handle_completed_message(message, TXradio):
     #     #forward
     #     packet = packet[0:6] + bytes([int(packet[6])-1]) + packet[7:] #decrement ttl
     TXradio.send(s)
-
-
-
-
