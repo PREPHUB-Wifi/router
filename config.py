@@ -12,8 +12,6 @@ PORT = 8000
 
 HUB = 0
 
-HOST = 
-
 # run ttl.py to see what this should be
 MAX_TTL = 5
 
