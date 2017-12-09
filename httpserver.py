@@ -91,8 +91,8 @@ if __name__ == "__main__":
     from sys import argv
     # init radio, start thread that handles incoming packets from radio
 
-    radio_TX = internetRadio.radio( 0, 8000,'elpis.mit.edu' )
-    radio_RX = internetRadio.radio( 8000, 0 ,'' )
+    radio_TX = internetRadio.Radio( 0, 8000,'elpis.mit.edu' )
+    radio_RX = internetRadio.Radio( 8000, 0 ,'' )
     listener_thread = Thread(target = listener.listen_forever, args = (radio_RX,))
     listener_thread.start()
 

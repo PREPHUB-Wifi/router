@@ -3,7 +3,7 @@
 import socket
 import config
 
-class InternetRadio:
+class Radio:
     def __init__(self, myPort, theirPort, hostname):
         self.myPort = myPort
         self.theirPort = theirPort
@@ -12,7 +12,7 @@ class InternetRadio:
 
     def listen(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind(('', myPort))
+        s.bind(('', self.myPort))
         s.listen(1)
         csock, caddr = s.accept()
         chunks = []
