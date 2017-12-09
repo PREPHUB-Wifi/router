@@ -6,6 +6,7 @@ import time
 from datetime import date
 import config
 
+
 def push_info(message, host=config.HOST):
     #data = parse apart info in json object 
     #make sure strings aren't empty
@@ -19,7 +20,14 @@ def push_info(message, host=config.HOST):
 
 def parse(packet):
     #print(packet)
-    text = packet.decode('utf-8')
+    text = packet.decode('utf-8') 
+    # message_json 
+
+    #   my_json = packet.decode('utf8').replace("'", '"')
+    #     message_json = json.loads(my_json)
+
+    #     s = json.dumps(message_json, indent=4, sort_keys=True) 
+    #     print(s)
     try:
         return {"to":text[0], "mid":text[1:4], "which":text[4], "howmany":text[5], \
             "ttl":text[6], "data":text[7:]}
@@ -35,8 +43,9 @@ def listen_forever(radio):
         parse_incoming_data(packet, radio)
 
 def parse_incoming_data(packet, TXradio):
-    try:
+    try: 
         parsedict = parse(packet)
+        print("Parsed dict")
         # note = dict() 
         # note[hash] = '0'
         # note[pckt_id] = parsedict[mid]
@@ -51,14 +60,14 @@ def parse_incoming_data(packet, TXradio):
         # h.request('POST', '/notes', data_encoded, headers)
         print("received: ", parsedict)
 
-        if parsedict["to"] == config.HUB or parsedict["to"] == "*":
-            print("pushing ", parsedict["data"], " to server")
+        # if parsedict["to"] == config.HUB or parsedict["to"] == "*":
+        #     print("pushing ", parsedict["data"], " to server")
             #push_info(parsedict["data"])
 
-        if int(parsedict["ttl"]) > 0 and parsedict["to"] == "*":
-            #forward
-            packet = packet[0:6] + bytes([int(packet[6])-1]) + packet[7:] #decrement ttl
-            TXradio.send(packet)
+        # if int(parsedict["ttl"]) > 0 and parsedict["to"] == "*":
+        #     #forward
+        #     packet = packet[0:6] + bytes([int(packet[6])-1]) + packet[7:] #decrement ttl
+        TXradio.send(packet)
             #r = requests.post('127.0.0.1:'+config.PORT, data=message)
 
     except:
