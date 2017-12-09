@@ -12,7 +12,7 @@ class InternetRadio:
 
     def listen(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind(('', 8000))
+        s.bind(('', myPort))
         s.listen(1)
         csock, caddr = s.accept()
         chunks = []
@@ -28,12 +28,14 @@ class InternetRadio:
         print(message)
         return message
 
-    def send(self, message):
+
+    #sends a single 64 byte pkt
+    def send(self, pkt):
         #send a message to another InternetRadio class that is listening
         self.sock.connect((hostname, theirPort))
         total_bytes_sent = 0
         while totalsent < config.MLENGTH:
-            sent = self.sock.send(message[total_bytes_sent:])
+            sent = self.sock.send(pkt[total_bytes_sent:])
             if sent == 0:
                 raise RuntimeError("socket connection broken")
             total_bytes_sent += sent

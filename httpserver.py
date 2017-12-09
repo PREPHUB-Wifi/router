@@ -7,7 +7,8 @@ from threading import Thread
 
 import listener
 import radio
-import config 
+import config
+import internetRadio
 import subprocess
 
 
@@ -55,8 +56,7 @@ class S(BaseHTTPRequestHandler):
             for i in range(howmany):
                 which = i + 1
                 packet = self.encap(to, mid, which, howmany, ttl, mslices[i])
-        #listener.push_info("http://localhost:8001", packet)
-                radio.send(packet)
+                radio_TX.send(packet)
         
             self.send_response(200, "{}")
             self.end_headers()
@@ -90,8 +90,10 @@ def run(server_class=HTTPServer, handler_class=S, port=config.PORT):
 if __name__ == "__main__":
     from sys import argv
     # init radio, start thread that handles incoming packets from radio
-    radio = radio.Radio(config.SERIALPORT, config.BAUD)
-    listener_thread = Thread(target = listener.listen_forever, args = (radio,))
+
+    radio_TX = internetRadio.radio( 0, 8000,'elpis.mit.edu' )
+    radio_RX = internetRadio.radio( 8000, 0 ,'' )
+    listener_thread = Thread(target = listener.listen_forever, args = (radio_RX,))
     listener_thread.start()
 
     if len(argv) == 2:
