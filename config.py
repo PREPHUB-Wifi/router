@@ -8,7 +8,9 @@ MLENGTH = 53 #DO NOT TOUCH
 SERIALPORT = '/dev/cu.usbmodem1411'
 
 BAUD = 9600
-PORT = 8002
+#PORT = 8002
+PORT = 8000 
+WEB_SERVER = 'localhost:8443'
 
 HUB = 0
 

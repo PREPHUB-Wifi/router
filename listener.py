@@ -12,15 +12,27 @@ import json
 def push_info(message, host=config.HOST):
     #data = parse apart info in json object 
     #make sure strings aren't empty 
-
-    #determine if Delete, put or post
-    data_encoded = urlencode(message)
-    h = http.client.HTTPConnection(host) #TODO config
-    headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
-    h.request('POST', '/notes', data_encoded, headers)
-    r = h.getresponse()
-    print(r.read())
-
+    if(message['operation'] == 'POST'):
+        data_encoded = urlencode(message)
+        h = http.client.HTTPConnection(config.WEB_SERVER) #TODO config
+        headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
+        h.request('POST', '/notes', data_encoded, headers)
+        r = h.getresponse()
+        print(r.read()) 
+    elif(message['operation'] == "'DELETE'"):
+        data_encoded = urlencode(config.WEB_SERVER)
+        h = http.client.HTTPConnection(host) #TODO config
+        headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
+        h.request('POST', '/notes', data_encoded, headers)
+        r = h.getresponse()
+        print(r.read()) 
+    else: 
+        data_encoded = urlencode(message)
+        h = http.client.HTTPConnection(config.WEB_SERVER) #TODO config
+        headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
+        h.request('POST', '/notes', data_encoded, headers)
+        r = h.getresponse()
+        print(r.read())
 
 def parse(packet):
     #print(packet)
@@ -47,7 +59,8 @@ def listen_forever(radio):
 
 def handle_completed_message(message, TXradio):  
     message_json = json.loads(message)
-    s = json.dumps(message_json, indent=4, sort_keys=True) 
+    s = json.dumps(message_json, indent=4, sort_keys=True)
+    push_info(s)
 
     # if parsedict["to"] == config.HUB or parsedict["to"] == "*":
     #     print("pushing ", parsedict["data"], " to server")
