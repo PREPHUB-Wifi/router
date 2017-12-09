@@ -10,8 +10,8 @@ class Accumulator():
     def new(self, packet):
         # parse the packet
         text = packet.decode('utf-8')
-        packet_dict = {"to":text[0], "mid":text[1:4], "which":text[4], "howmany":text[5], \
-            "ttl":text[6], "data":text[7:]}
+        packet_dict = {"to":text[0], "mid":text[1:7], "which":text[7], "howmany":text[8], \
+            "ttl":text[9], "data":text[10:]}
 
         # either add to collection of packets for that message id or start new
         if packet_dict["mid"] in self.blobs.keys():

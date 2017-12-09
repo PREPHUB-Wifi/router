@@ -65,11 +65,12 @@ class S(BaseHTTPRequestHandler):
 
     def encap(self, to, mid, which, howmany, ttl, mslice):
         to = str(to)
-        mid = str(mid)
+        mid = str([0]*(6-len(mid))) + str(mid) #leading zeroes
         wh = str(which)
         hm = str(howmany)
         ttl = str(ttl)
         prefix = to + mid + wh + hm + ttl
+        assert len(prefix) == 10
         message = bytes(prefix, 'utf-8') + mslice + bytes('\n', 'utf-8')
         
         print(message.decode('utf-8'))
