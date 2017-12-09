@@ -60,4 +60,4 @@ def handle_completed_message(message, TXradio):
     # if int(parsedict["ttl"]) > 0 and parsedict["to"] == "*":
     #     #forward
     #     packet = packet[0:6] + bytes([int(packet[6])-1]) + packet[7:] #decrement ttl
-    TXradio.send(s)
+    #TXradio.send(s)

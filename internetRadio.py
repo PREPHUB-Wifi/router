@@ -41,7 +41,7 @@ class Radio:
         total_bytes_sent = 0
         self.sock.connect((self.hostname, self.theirPort))
         while total_bytes_sent < config.MLENGTH:
-            sent = self.sock.send(pkt[total_bytes_sent:])
+            sent = self.sock.send(bytes(pkt[total_bytes_sent:],'utf-8'))
             if sent == 0:
                 raise RuntimeError("socket connection broken")
             total_bytes_sent += sent

@@ -39,7 +39,7 @@ class S(BaseHTTPRequestHandler):
         my_json = message.decode('utf8').replace("'", '"')
         message_json = json.loads(my_json)
 
-        packets = util.encode(message, message_json['data']['pckt_id'])
+        packets = util.encode(my_json, message_json['data']['pckt_id'])
         for each in packets:
             radio_TX.send(each)
 
@@ -102,10 +102,10 @@ if __name__ == "__main__":
     from sys import argv
     # init radio, start thread that handles incoming packets from radio
 
-    radio_TX = internetRadio.Radio( None, 7001, '18.111.107.154')
-    radio_RX = internetRadio.Radio(7000, None ,'')
-    listener_thread = Thread(target = listener.listen_forever, args = (radio_RX,))
-    listener_thread.start()
+    radio_TX = internetRadio.Radio( None, 7000, 'elpis.mit.edu')
+    # radio_RX = internetRadio.Radio(7001, None ,'')
+    # listener_thread = Thread(target = listener.listen_forever, args = (radio_RX,))
+    # listener_thread.start()
 
     if len(argv) == 2:
         run(port=int(argv[1]))
